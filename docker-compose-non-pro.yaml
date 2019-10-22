@@ -1,0 +1,35 @@
+version: '2'
+services:
+    nginx:
+        build:
+          context: .
+          dockerfile: nginx.Dockerfile
+        container_name: sanic_nginx_con
+        ports:
+            - "8888:80"
+        links:
+            - app
+    app:
+        build:
+          context: ./app
+          dockerfile: Dockerfile
+        container_name: sanic_url_con
+        expose:
+            - "8000"
+        links:
+            - postgres
+        env_file:
+            - ./.env
+        depends_on:
+            - postgres
+    postgres:
+        build:
+          context: ./sql
+          dockerfile: Dockerfile
+        container_name: sanic_db_con
+        env_file:
+            - ./.env
+        # volumes:
+        #     - ./pg:/var/lib/postgres/data/
+        expose:
+            - "5432"
