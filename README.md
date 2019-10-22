@@ -1,5 +1,7 @@
 ### URL shortener
 
+#### Using docker-compose file for non-production
+
 Test trigger
 
 Another URL shoterner app.
@@ -10,8 +12,24 @@ This is an example of using [Sanic](https://github.com/channelcat/sanic) with [a
 If you want to try, use `docker-compose`:
 
 ```
-$ docker-compose build
-$ docker-compose up
+$ docker-compose -f docker-compose-non-pro.yaml build
+$ docker-compose up -d
+```
+
+#### Using docker-compose for Production
+
+Build images:
+
+```
+docker build -t namptit307/sanic_url ./app
+docker build -t namptit307/sanic_db ./sql/
+docker build -t namptit307/sanic_nginx -f nginx.Dockerfile .
+```
+
+Start application via docker-compose
+
+```
+docker-compose -f docker-compose-pro.yaml up -d
 ```
 
 
@@ -58,6 +76,4 @@ Run the app
 $ POSTGRES_USER=url POSTGRES_PASSWORD=secret DEBUG=True python app.py
 ```
 
-### License
 
-MIT
